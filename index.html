@@ -6,7 +6,61 @@
             console.log("hello world!");
 
             //create a Set (collection ) type
+            var collect1 = new Set();
 
+            //add 2 values to the collection
+            collect1.add('apple');
+            collect1.add('oranges');
+
+            //return the number of members in the collection
+            console.log('collection size: ', collect1.size);
+
+            //add a new member and try to add it again
+            collect1.add('banana');
+            collect1.add('banana'); //this is being ignored
+
+            //print the collection size again
+            console.log('collection size: ', collect1.size);
+
+            //delete 1 member
+            collect1.delete('banana');
+
+            //check if a specific value is a member or not
+            console.log('banana?', collect1.has('banana'));
+            console.log('apple?', collect1.has('apple'));
+
+            //test foreach using anonymous function
+            collect1.forEach(function(value){
+                console.log("current value: ", value);
+            });
+
+            //using a declared function
+            collect1.forEach(loopFor);
+
+            function loopFor(value){
+                console.log('value (declared function): ', value);
+            }
+
+            //convert the collection into an array
+            var arr = [...collect1];
+            console.log('element at index 0:', arr[0]);
+            arr.push('banana');
+            arr.push('banana');
+            console.log('all elements in array: ', arr);
+
+
+            // var arr1 = new Array();
+            // arr1.push(1);
+            // arr1.push(2);
+            // console.log('array 1: ', arr1);
+
+            // var arr2 = [1, 2,3];
+            // console.log('array 2: ', arr2);
+
+            var numbers = [1,1,2,2,3,4,4,5,6,7,7,7,7,8,8,9,9,10,11,1,14,16,21,23,22,2,22,22,2,55,5,57,76,76,78,78,98,98];
+
+            //based on numbers array create a set collection with unique values.
+            
         </script>
     </head>
     <body></body>

@@ -1,73 +1,75 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Week 09 In Class</title>
+        <title>Week 09 Online</title>
         <script>
+            //console.log("hello world!");
 
-            //create a base class
             class Book{
-                //define the constructor
+                
+                //define a constructor
                 constructor(title, author, pubdate){
                     this.title = title;
                     this.author = author;
                     this.pubdate = pubdate;
                 }
-
                 //create a method
                 getBook(){
-                    return this.author + ' published ' + this.title + ' in ' + this.pubdate;
+                    //return book information
+                    return this.author + " published " + this.title + " in " + this.pubdate;
                 }
             }
 
-            //create a new class that extends our base class
-            class TypedBook extends Book
-            {
-                constructor(title, author, pubdate, type){
-                    super(title, author, pubdate);
-                    this.type = type;
-                }
-
-                //override getBook method
-                getBook(){
-                    return super.getBook() + ' - category: ' + this.type;
-                }
-
-                //ES6
-                //get type
-                get mytype(){
-                    return this.type;
-                }
-                //set type
-                set mytype(newType){
-                    if(newType){
-                        this.type = newType;
-                    }
-                }
-            }
-
-            // //create an object using the base class just for testing purposes
-            // var obj1 = new Book('this is my title', 'this is my author', 'this is my publication date');
-            // //loop object properties and print to console
+            // //Test base class
+            // var obj1 = new Book('mytitle', 'myauthor', 'mypubdate');
+            // //loop the property names
             // for(var propName in obj1){
-            //     console.log('Property name: ', propName);
-            //     console.log('Property value: ', obj1[propName]);
-            //     //console.log('Property value: ', obj1.propName);
+            //     console.log('prop name: ', propName);
+            //     //lets try to print the property value
+            //     console.log('prop value: ', obj1[propName]);
             // }
 
-            var obj2 = new TypedBook('my author', 'my title', 'my pubdate', 'my type');
-            //print object property names
-            for(var propName in obj2){
-                console.log('Property name: ', propName);
-                console.log('Property value: ', obj2[propName]);
+            //create a class that extends the base class book
+            class TypedBook extends Book
+            {
+                //define a constructor
+                constructor(title, author, pubdate, type){
+                    super(title, author, pubdate);
+                    this._type = type;
+                }
+                //get and set
+                get type(){
+                    return this._type;
+                }
+
+                //set
+                set type(newValue){
+                    this._type = newValue;
+                }
+
+                //lets override getBook from our base class   
+                getBook(){
+                    return super.getBook() + " - category: " + this.type
+                    //return 'reordering values: ' + this.pubdate + ' ' + this.type;
+                }
+                getBookInfo(){
+                    return 'reordering values: ' + this.pubdate + ' ' + this.type;
+                }             
             }
-            console.log('getBook()', obj2.getBook());
 
-            //test type
-            console.log('type: ', obj2.mytype);
+            var obj2 = new TypedBook('mytitle2', 'myauthor2', 'mypubdate2', 'mytype2');
 
-            obj2.type = 'new value';
+            //loop property names of obj2
+            for(var propName in obj2){
+                console.log('obj2 prop name: ', propName);
+                console.log('obj2 prop value: ', obj2[propName]);
+            }
+            //lets test getBook method)
+            console.log(obj2.getBookInfo());
+            obj2.type = 'new type value';
 
-            console.log('type: ', obj2.mytype);
+            console.log(obj2.getBookInfo());
+            console.log(obj2.getBook());
 
         
         </script>

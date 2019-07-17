@@ -1,80 +1,163 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Week 09 Online</title>
-        <script>
-            //console.log("hello world!");
 
-            class Book{
-                
-                //define a constructor
-                constructor(title, author, pubdate){
-                    this.title = title;
-                    this.author = author;
-                    this.pubdate = pubdate;
-                }
-                //create a method
-                getBook(){
-                    //return book information
-                    return this.author + " published " + this.title + " in " + this.pubdate;
-                }
+<head>
+    <title>Week 10 In Class</title>
+    <script>
+        //=============================================
+        //Globals
+        let _isInit = false;
+        let _movies = [];
+        let _tv_shows = [];
+
+        //=============================================
+        //Classes
+
+        // Digital asset base class
+        class DigitalAsset {
+            //Properties
+            _title = '';
+            _rotten_tomatoes = 0;
+            _release_year = 1900;
+            _description = '';
+            _image_path = './assets/images/';
+            //type = '';
+            //Constructor
+            constructor(title, rotten_tomatoes, release_year, description) {
+                //Initialize properties using constructor input parameters
+                this._title = title;
+                this._rotten_tomatoes = rotten_tomatoes;
+                this._release_year = release_year;
+                this._description = description;
+
+            }
+            getBasicInformation() {
+                var out = this._title + " has " + this._rotten_tomatoes + " rotten tomatoes ";
+                out += ' was released on year: ' + this._release_year + ' description: ' + this._description;
+                return out;
+            }
+            getBasicInformationWithInterpolation() {
+                var out = `${this._title} has ${this._rotten_tomatoes} rotten tomatoes, was released on year: ${this._release_year}, description: ${this._description}`;
+                return out;
+            }
+            getMyAssetType() {
+                return "I do not have one!";
             }
 
-            // //Test base class
-            // var obj1 = new Book('mytitle', 'myauthor', 'mypubdate');
-            // //loop the property names
-            // for(var propName in obj1){
-            //     console.log('prop name: ', propName);
-            //     //lets try to print the property value
-            //     console.log('prop value: ', obj1[propName]);
+        }
+
+        //Movie class
+        class Movie extends DigitalAsset {
+
+            constructor(title, rotten_tomatoes, release_year) {
+                //call parent constuctor
+                super(title, rotten_tomatoes, release_year, "Movie");
+            }
+            getMyAssetType() {
+                return "I am a Movie";
+            }
+        }
+
+        //TVShow class
+        class TVShow extends DigitalAsset {
+            constructor(title, rotten_tomatoes, release_year) {
+                //call parent constuctor
+                super(title, rotten_tomatoes, release_year, "TVShow");
+            }
+            getMyAssetType() {
+                return "I am a TV Show";
+            }
+        }
+
+        //=============================================
+        //Functions
+        function Init() {
+            console.log("Starting Init...");
+            _isInit = true;
+
+            // var obj = new DigitalAsset('title', 'rotten', 'release', 'desc');
+            // obj.title = 'new title';
+
+            // //print the property names of my DigitalAsset object
+            // for(var propName in obj){
+            //     console.log('propName: ', propName);
+            //     console.log('value: ', obj[propName]);
             // }
+        }
 
-            //create a class that extends the base class book
-            class TypedBook extends Book
-            {
-                //define a constructor
-                constructor(title, author, pubdate, type){
-                    super(title, author, pubdate);
-                    this._type = type;
-                }
-                //get and set
-                get type(){
-                    return this._type;
-                }
 
-                //set
-                set type(newValue){
-                    this._type = newValue;
-                }
-
-                //lets override getBook from our base class   
-                getBook(){
-                    return super.getBook() + " - category: " + this.type
-                    //return 'reordering values: ' + this.pubdate + ' ' + this.type;
-                }
-                getBookInfo(){
-                    return 'reordering values: ' + this.pubdate + ' ' + this.type;
-                }             
+        function CreateObjects() {
+            console.log("Starting Create Objects...");
+            console.log('Is init: ', _isInit);
+            //Create 10 movie objects
+            for (var movie_index = 0; movie_index < 3; movie_index++) {
+                var obj = new Movie(`title_${movie_index}`, movie_index, `202${movie_index}`);
+                obj._image_path += 'movie_'+(movie_index+1) + '.jpg'
+                _movies.push(obj);
             }
 
-            var obj2 = new TypedBook('mytitle2', 'myauthor2', 'mypubdate2', 'mytype2');
+            console.log('total movies: ', _movies.length);
 
-            //loop property names of obj2
-            for(var propName in obj2){
-                console.log('obj2 prop name: ', propName);
-                console.log('obj2 prop value: ', obj2[propName]);
+            //create 5 TVshow objects
+            for (var tv_show_index = 0; tv_show_index < 5; tv_show_index++) {
+                var obj = new TVShow(`tv_title_${tv_show_index}`, tv_show_index + 2, `199${tv_show_index}`);
+                //add the tv show to the global array
+                _tv_shows.push(obj);
             }
-            //lets test getBook method)
-            console.log(obj2.getBookInfo());
-            obj2.type = 'new type value';
+            console.log('total tv shows: ', _tv_shows.length);
+        }
 
-            console.log(obj2.getBookInfo());
-            console.log(obj2.getBook());
+        function PrintAssetsInfo() {
+            if(!_isInit){
+                console.log("system not ready, call init , create objects and then you can call this function!");
+                return;
+            }
 
-        
-        </script>
-    </head>
-    <body>
+            //Print movies
+            var result = "";
 
-    </body>
+            //loop movies array
+            for(var index = 0; index < _movies.length; index++){
+                //loop current object property name=>value
+                for(var propName in _movies[index]){
+                    result += propName + ' : ' + _movies[index][propName];
+                }
+                result += "<br/>"
+                result += "<img src='"+_movies[index]._image_path + "' />";
+                result += "<br/>";
+            }
+
+            //get the html element that we want to use for rendering the values
+            document.getElementById('digital_assets').innerHTML = result;
+
+        }
+
+    </script>
+
+    <style>
+        .custom-padding {
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Week 10 in class example</h1>
+    <br />
+    <table border="1">
+        <tr>
+            <td class="custom-padding">
+                <input type="button" onclick="Init()" value="Init" />
+            </td>
+            <td class="custom-padding">
+                <input type="button" onclick="CreateObjects()" value="Create Objects" />
+            </td>
+            <td class="custom-padding">
+                <input type="button" onclick="PrintAssetsInfo()" value="Print Assets Information" />
+            </td>
+        </tr>
+    </table>
+    <div id='digital_assets'></div>
+</body>
+
 </html>

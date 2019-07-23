@@ -2,162 +2,150 @@
 <html>
 
 <head>
-    <title>Week 10 In Class</title>
+    <title>Week 10 Online</title>
     <script>
-        //=============================================
+        //=====================================================
         //Globals
         let _isInit = false;
         let _movies = [];
-        let _tv_shows = [];
-
-        //=============================================
+        //====================================================
         //Classes
 
-        // Digital asset base class
+        //base class
         class DigitalAsset {
-            //Properties
-            _title = '';
-            _rotten_tomatoes = 0;
-            _release_year = 1900;
-            _description = '';
-            _image_path = './assets/images/';
-            //type = '';
-            //Constructor
-            constructor(title, rotten_tomatoes, release_year, description) {
-                //Initialize properties using constructor input parameters
-                this._title = title;
-                this._rotten_tomatoes = rotten_tomatoes;
-                this._release_year = release_year;
-                this._description = description;
+            //properties
+            name = "";
+            release_year = "";
+            description = "";
+            rotten_tomatoes = 0;
+            what_am_i = "I don't know!";
+            image_path= "./assets/images/";
+            //constructor
+            constructor(name, release_year, description, rotten_tomatoes) {
+                this.name = name;
+                this.release_year = release_year;
+                this.description = description;
+                this.rotten_tomatoes = rotten_tomatoes;
+            }
 
-            }
-            getBasicInformation() {
-                var out = this._title + " has " + this._rotten_tomatoes + " rotten tomatoes ";
-                out += ' was released on year: ' + this._release_year + ' description: ' + this._description;
-                return out;
-            }
-            getBasicInformationWithInterpolation() {
-                var out = `${this._title} has ${this._rotten_tomatoes} rotten tomatoes, was released on year: ${this._release_year}, description: ${this._description}`;
-                return out;
-            }
-            getMyAssetType() {
-                return "I do not have one!";
+            //methods
+            getAssetInfo() {
+                return `asset name: ${this.name} was released on year: ${this.release_year} with ${this.rotten_tomatoes} rotten tomatoes. Description: ${this.description}`;
             }
 
         }
 
-        //Movie class
+        //Movie
         class Movie extends DigitalAsset {
-
-            constructor(title, rotten_tomatoes, release_year) {
-                //call parent constuctor
-                super(title, rotten_tomatoes, release_year, "Movie");
+            //create a constructor and pass needed values to parent class
+            constructor(name, release_year, description, rotten_tomatoes) {
+                super(name, release_year, description, rotten_tomatoes);
+                super.what_am_i = "I am a movie!";
             }
-            getMyAssetType() {
-                return "I am a Movie";
+
+            //override getAssetInfo method
+            getAssetInfo() {
+                return "movie name: " + this.name + " was released on year: " + this.releaseEvents + " with " + this.rotten_tomatoes + " rotten tomatoes. Description: " + this.description;
             }
         }
 
-        //TVShow class
-        class TVShow extends DigitalAsset {
-            constructor(title, rotten_tomatoes, release_year) {
-                //call parent constuctor
-                super(title, rotten_tomatoes, release_year, "TVShow");
-            }
-            getMyAssetType() {
-                return "I am a TV Show";
-            }
-        }
 
-        //=============================================
+
+        //=====================================================
         //Functions
+
         function Init() {
-            console.log("Starting Init...");
+            //takes care of all initialization routines
+            console.log("Starting function Init()...");
+
+            // Your code here
+
             _isInit = true;
-
-            // var obj = new DigitalAsset('title', 'rotten', 'release', 'desc');
-            // obj.title = 'new title';
-
-            // //print the property names of my DigitalAsset object
-            // for(var propName in obj){
-            //     console.log('propName: ', propName);
-            //     console.log('value: ', obj[propName]);
-            // }
+            console.log("function Init() completed!");
         }
-
 
         function CreateObjects() {
-            console.log("Starting Create Objects...");
-            console.log('Is init: ', _isInit);
-            //Create 10 movie objects
-            for (var movie_index = 0; movie_index < 3; movie_index++) {
-                var obj = new Movie(`title_${movie_index}`, movie_index, `202${movie_index}`);
-                obj._image_path += 'movie_'+(movie_index+1) + '.jpg'
+            console.log("Starting CreateObjects() function...");
+
+            if (!_isInit) {
+                console.log("You need to call Init() function first!");
+                return;
+            }
+            //    // test the base class
+            //    var obj1 = new Movie('test name', '2016', 'test description', 4 );
+            //    //print property name and values
+            //    for(var propName in obj1){
+            //        console.log(propName + " : " + obj1[propName]);
+            //    }
+
+            //    console.log(obj1.getAssetInfo());
+
+            //Create 10 movie objects 
+            var counter = 1; 
+            for (var movie_index = 1; movie_index <= 9; movie_index++) {
+                var obj = new Movie(`name_${movie_index}`, `201_${movie_index}`, `decription_${movie_index}`, movie_index);
+                
+                obj.image_path+= `movie_${counter}.jpg`;
+                counter = (counter >= 3)?1:(counter +1);
                 _movies.push(obj);
             }
 
-            console.log('total movies: ', _movies.length);
-
-            //create 5 TVshow objects
-            for (var tv_show_index = 0; tv_show_index < 5; tv_show_index++) {
-                var obj = new TVShow(`tv_title_${tv_show_index}`, tv_show_index + 2, `199${tv_show_index}`);
-                //add the tv show to the global array
-                _tv_shows.push(obj);
-            }
-            console.log('total tv shows: ', _tv_shows.length);
+            console.log('movies inside array: ', _movies.length);
+            console.log("function CreateObjects() completed!");
         }
 
-        function PrintAssetsInfo() {
-            if(!_isInit){
-                console.log("system not ready, call init , create objects and then you can call this function!");
+        function RenderMovies() {
+            if (!_isInit) {
+                console.log("You need to call Init() function first!");
                 return;
             }
 
-            //Print movies
-            var result = "";
-
-            //loop movies array
-            for(var index = 0; index < _movies.length; index++){
-                //loop current object property name=>value
-                for(var propName in _movies[index]){
-                    result += propName + ' : ' + _movies[index][propName];
+            if (_movies.length <= 0) {
+                console.log("Click Create Objects first!");
+                return;
+            }
+            //render movies on the screen
+            var outData = "";
+            for(var movie_index = 0; movie_index < _movies.length; movie_index++){
+                //outData += "<p>type: " + _movies[movie_index]['what'] 
+                //loop property names
+                for(var propName in _movies[movie_index]){
+                    outData += `<p>${propName} : ${_movies[movie_index][propName]}</p>`;
                 }
-                result += "<br/>"
-                result += "<img src='"+_movies[index]._image_path + "' />";
-                result += "<br/>";
+                //render an image for the movie
+                outData += "<img src='" + _movies[movie_index].image_path + "' width:300px; heigh:300px;/>";
+                outData += "<hr>";
+                outData += "<br/>";
             }
 
-            //get the html element that we want to use for rendering the values
-            document.getElementById('digital_assets').innerHTML = result;
-
+            //get html container and update its value
+            document.getElementById("movies").innerHTML = outData;
         }
-
     </script>
 
     <style>
-        .custom-padding {
-            padding: 20px;
-        }
+
     </style>
 </head>
 
 <body>
-    <h1>Week 10 in class example</h1>
+    <h1>Week 10 online example</h1>
     <br />
-    <table border="1">
+    <table>
         <tr>
-            <td class="custom-padding">
-                <input type="button" onclick="Init()" value="Init" />
+            <td>
+                <input type="button" value="Init" onclick="Init()" />
             </td>
-            <td class="custom-padding">
-                <input type="button" onclick="CreateObjects()" value="Create Objects" />
+            <td>
+                <input type="button" value="Create Objects" onclick="CreateObjects()" />
             </td>
-            <td class="custom-padding">
-                <input type="button" onclick="PrintAssetsInfo()" value="Print Assets Information" />
+            <td>
+                <input type="button" value="Render Movies" onclick="RenderMovies()" />
             </td>
         </tr>
     </table>
-    <div id='digital_assets'></div>
+    <br/>
+    <div id="movies"></div>
 </body>
 
 </html>

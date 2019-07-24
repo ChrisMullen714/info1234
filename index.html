@@ -2,125 +2,111 @@
 <html>
 
 <head>
-    <title>Week 10 Online</title>
+    <title>Week 11 In Class</title>
     <script>
-        //=====================================================
-        //Globals
-        let _isInit = false;
-        let _movies = [];
-        //====================================================
-        //Classes
+        //=============================================
+        // Functions
 
-        //base class
-        class DigitalAsset {
-            //properties
-            name = "";
-            release_year = "";
-            description = "";
-            rotten_tomatoes = 0;
-            what_am_i = "I don't know!";
-            image_path= "./assets/images/";
-            //constructor
-            constructor(name, release_year, description, rotten_tomatoes) {
-                this.name = name;
-                this.release_year = release_year;
-                this.description = description;
-                this.rotten_tomatoes = rotten_tomatoes;
-            }
-
-            //methods
-            getAssetInfo() {
-                return `asset name: ${this.name} was released on year: ${this.release_year} with ${this.rotten_tomatoes} rotten tomatoes. Description: ${this.description}`;
-            }
-
+        var afun = function (input_parameter) {
+            return input_parameter;
         }
+        //test the function
+        console.log(afun("this is my input parameter"));
 
-        //Movie
-        class Movie extends DigitalAsset {
-            //create a constructor and pass needed values to parent class
-            constructor(name, release_year, description, rotten_tomatoes) {
-                super(name, release_year, description, rotten_tomatoes);
-                super.what_am_i = "I am a movie!";
+        //same thing but with arrow function
+        var afun2 = input_parameter => input_parameter;
+
+        //test arrow function
+        console.log(afun2("my second input parameter"));
+
+        //pass more than one input parameter
+        var afun3 = (a, b, c) => a + b + c;
+        console.log(afun3(1, 2, 3));
+
+        //lets use an arrow function inside an object method
+        var student = {
+            name: "test student name",
+            courses: ['web prog', 'java', 'c++', 'etc.'],
+            printCourseInformation() {
+                //iterate courses array and print its contents
+                this.courses.forEach(course => {
+                    //print item into the console.
+                    console.log("course: ", course);
+                });
             }
+        };
 
-            //override getAssetInfo method
-            getAssetInfo() {
-                return "movie name: " + this.name + " was released on year: " + this.releaseEvents + " with " + this.rotten_tomatoes + " rotten tomatoes. Description: " + this.description;
-            }
-        }
+        //test printcourseinformation method
+        student.printCourseInformation();
 
 
+        //======================================
+        //promises
+        const delay = input_seconds => {
+            return new Promise(resolve => {
+                setTimeout(resolve, input_seconds * 1000)
+            });
+        };
 
-        //=====================================================
-        //Functions
+        //test delay
+        delay(2).then(
+            () => console.log('i have returned after: 2 seconds!')
+        );
+        delay(4).then(
+            () => console.log('i have returned after: 4 seconds!')
+        );
 
-        function Init() {
-            //takes care of all initialization routines
-            console.log("Starting function Init()...");
+        console.log('we have executed delay x time!');
 
-            // Your code here
 
-            _isInit = true;
-            console.log("function Init() completed!");
-        }
-
-        function CreateObjects() {
-            console.log("Starting CreateObjects() function...");
-
-            if (!_isInit) {
-                console.log("You need to call Init() function first!");
-                return;
-            }
-            //    // test the base class
-            //    var obj1 = new Movie('test name', '2016', 'test description', 4 );
-            //    //print property name and values
-            //    for(var propName in obj1){
-            //        console.log(propName + " : " + obj1[propName]);
-            //    }
-
-            //    console.log(obj1.getAssetInfo());
-
-            //Create 10 movie objects 
-            var counter = 1; 
-            for (var movie_index = 1; movie_index <= 9; movie_index++) {
-                var obj = new Movie(`name_${movie_index}`, `201_${movie_index}`, `decription_${movie_index}`, movie_index);
-                
-                obj.image_path+= `movie_${counter}.jpg`;
-                counter = (counter >= 3)?1:(counter +1);
-                _movies.push(obj);
-            }
-
-            console.log('movies inside array: ', _movies.length);
-            console.log("function CreateObjects() completed!");
-        }
-
-        function RenderMovies() {
-            if (!_isInit) {
-                console.log("You need to call Init() function first!");
-                return;
-            }
-
-            if (_movies.length <= 0) {
-                console.log("Click Create Objects first!");
-                return;
-            }
-            //render movies on the screen
-            var outData = "";
-            for(var movie_index = 0; movie_index < _movies.length; movie_index++){
-                //outData += "<p>type: " + _movies[movie_index]['what'] 
-                //loop property names
-                for(var propName in _movies[movie_index]){
-                    outData += `<p>${propName} : ${_movies[movie_index][propName]}</p>`;
+        //promise with resolve (pass) and reject (failed)
+        const delay2 = seconds => {
+            return new Promise((resolve, reject) => {
+                if (typeof seconds !== "number") {
+                    reject(new Error("input parameter seconds must be numeric"))
                 }
-                //render an image for the movie
-                outData += "<img src='" + _movies[movie_index].image_path + "' width:300px; heigh:300px;/>";
-                outData += "<hr>";
-                outData += "<br/>";
-            }
+                setTimeout(
+                    () => resolve(`${seconds} second/s delay is up`), seconds * 1000
+                );
+            });
+        };
 
-            //get html container and update its value
-            document.getElementById("movies").innerHTML = outData;
-        }
+
+        //test delay 2
+        delay2(4).then(msg => msg.toUpperCase())
+            .then(msg => `${msg}!!!!`)
+            .then(msg => console.log(msg))
+
+        //test delay 2 reject
+        delay2("4 seconds").then(msg => msg.toUpperCase())
+            .then(msg => `${msg}!!!!`)
+            .then(msg => console.log(msg))
+
+        //Lets find out how many people (at least from NASA) are out in the space
+        const peopleInSpace = () => {
+            return new Promise((resolve, reject) => {
+                const url = 'http://api.open-notify.org/astros.json';
+                const request = new XMLHttpRequest();
+                request.open('GET', url);
+                request.onload = () => {
+                    if (request.status === 200) {
+                        resolve(JSON.parse(request.response))
+                    }
+                    else {
+                        rejects(Error(request.statusText));
+                    }
+                };
+                request.onerror = err => rejects(err);
+                request.send();
+            });
+        };
+
+        //use people in space object
+        peopleInSpace().then(
+            data => console.log(data),
+            err => console.error(new Error("unable to get people in space"))
+        );
+
     </script>
 
     <style>
@@ -129,23 +115,7 @@
 </head>
 
 <body>
-    <h1>Week 10 online example</h1>
-    <br />
-    <table>
-        <tr>
-            <td>
-                <input type="button" value="Init" onclick="Init()" />
-            </td>
-            <td>
-                <input type="button" value="Create Objects" onclick="CreateObjects()" />
-            </td>
-            <td>
-                <input type="button" value="Render Movies" onclick="RenderMovies()" />
-            </td>
-        </tr>
-    </table>
-    <br/>
-    <div id="movies"></div>
+
 </body>
 
 </html>

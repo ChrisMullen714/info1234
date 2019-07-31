@@ -2,119 +2,142 @@
 <html>
 
 <head>
-    <title>Week 11 In Class</title>
-    <script>
-        //=============================================
-        // Functions
-
-        var afun = function (input_parameter) {
-            return input_parameter;
+    <title>Week 12 In Class</title>
+    <style>
+        .box {
+            position: absolute;
+            border-style: solid;
+            border-width: 2px;
+            width: 300px;
+            height: 300px;
         }
-        //test the function
-        console.log(afun("this is my input parameter"));
+    </style>
 
-        //same thing but with arrow function
-        var afun2 = input_parameter => input_parameter;
+    <script>
 
-        //test arrow function
-        console.log(afun2("my second input parameter"));
 
-        //pass more than one input parameter
-        var afun3 = (a, b, c) => a + b + c;
-        console.log(afun3(1, 2, 3));
-
-        //lets use an arrow function inside an object method
-        var student = {
-            name: "test student name",
-            courses: ['web prog', 'java', 'c++', 'etc.'],
-            printCourseInformation() {
-                //iterate courses array and print its contents
-                this.courses.forEach(course => {
-                    //print item into the console.
-                    console.log("course: ", course);
-                });
+        //=========================================
+        //Classes
+        class Shape {
+            id = 0;
+            name = "";
+            x = 0;
+            y = 0;
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.name = "Shape";
             }
-        };
+            draw() {
+                return "drawing a shape!";
+            }
+        }
 
-        //test printcourseinformation method
-        student.printCourseInformation();
+        class Triangle extends Shape {
+            constructor(x, y) {
+                super(x, y);
+                this.name = "Triangle";
+            }
+            draw() {
+                return "drawing a triangle!"
+            }
+        }
+
+        //=========================================
+        //Globals
+        var _x_position = 10;
+        var _y_position = 50;
+        var _width = 300;
+        var _height = 300;
+        var _offset = 50;
+
+        var _box_id_counter = 1;
+
+        var all_objects = [];
 
 
-        //======================================
-        //promises
-        const delay = input_seconds => {
-            return new Promise(resolve => {
-                setTimeout(resolve, input_seconds * 1000)
-            });
-        };
-
-        //test delay
-        delay(2).then(
-            () => console.log('i have returned after: 2 seconds!')
-        );
-        delay(4).then(
-            () => console.log('i have returned after: 4 seconds!')
-        );
-
-        console.log('we have executed delay x time!');
-
-
-        //promise with resolve (pass) and reject (failed)
-        const delay2 = seconds => {
-            return new Promise((resolve, reject) => {
-                if (typeof seconds !== "number") {
-                    reject(new Error("input parameter seconds must be numeric"))
+        //=========================================
+        //Functions
+        var UpdateObject = (object_id)=>{
+            //console.log('current id: ', object_id);
+            var selected_object;
+            for(var index = 0; index < all_objects.length; index++){
+                console.log(all_objects[index]);
+                if(all_objects[index]["id"] == object_id){
+                    selected_object = all_objects[index];
+                    console.log('object found!');
                 }
-                setTimeout(
-                    () => resolve(`${seconds} second/s delay is up`), seconds * 1000
-                );
-            });
+            }
+
+            if(selected_object){
+            //get values from html
+            var x = document.getElementById(`tb_x_${object_id}`).value;
+            var y = document.getElementById('tb_y_'+object_id).value;
+
+            selected_object.x = x;
+            selected_object.y = y;
+
+            for(var prop_name in selected_object){
+                console.log(`current value ${prop_name}`, selected_object[prop_name]);
+            }
+            }
+
+
+
         };
 
+        var RenderObject = () => {
 
-        //test delay 2
-        delay2(4).then(msg => msg.toUpperCase())
-            .then(msg => `${msg}!!!!`)
-            .then(msg => console.log(msg))
+            //create 10 objects 
+            if (all_objects.length <= 0) {
+                for (var object_index = 1; object_index <= 10; object_index++) {
+                    var obj = new Triangle(object_index, object_index + 1);
+                    obj.id = object_index;
+                    all_objects.push(obj);
+                }
 
-        //test delay 2 reject
-        delay2("4 seconds").then(msg => msg.toUpperCase())
-            .then(msg => `${msg}!!!!`)
-            .then(msg => console.log(msg))
+            }
 
-        //Lets find out how many people (at least from NASA) are out in the space
-        const peopleInSpace = () => {
-            return new Promise((resolve, reject) => {
-                const url = 'http://api.open-notify.org/astros.json';
-                const request = new XMLHttpRequest();
-                request.open('GET', url);
-                request.onload = () => {
-                    if (request.status === 200) {
-                        resolve(JSON.parse(request.response))
-                    }
-                    else {
-                        rejects(Error(request.statusText));
-                    }
-                };
-                request.onerror = err => rejects(err);
-                request.send();
-            });
+
+            var div_object = "";
+            for (var index = 0; index < all_objects.length; index++) {
+
+                div_object += `<div id='box_${_box_id_counter++}' class='box' style='left:${_x_position}px; top:${_y_position}px;'>`;
+                //iterate object properties
+                for (var prop_name in all_objects[index]) {
+                    //optional.... ignore the following property
+                    if (prop_name == "name") continue;
+                    //create labels and input text boxes
+                    div_object += `<p>${prop_name}: <input id='tb_${prop_name}_${all_objects[index].id}' type='text' value='${all_objects[index][prop_name]}'/></p>`
+                   
+                }
+                div_object += `<p><input type='button' onclick='UpdateObject(${all_objects[index].id})' value='Update Object'/></p>`;
+                div_object += "</div>";
+                if (_x_position > 1500) {
+                    _x_position = 10;
+                    _y_position += _height + _offset;
+                }
+                else {
+                    _x_position += _width + _offset;
+                }
+                console.log("x position: ", _x_position);
+                console.log("y position", _y_position);
+            }
+
+            document.getElementById('main_container').innerHTML = div_object;
+
         };
-
-        //use people in space object
-        peopleInSpace().then(
-            data => console.log(data),
-            err => console.error(new Error("unable to get people in space"))
-        );
 
     </script>
 
-    <style>
-
-    </style>
 </head>
 
 <body>
+    <input type="button" value="Render Object" onclick="RenderObject()" />
+    <div id="main_container">
+        <!-- <div id='myuniqueid' class="box" style="left:10px; top:60px;"></div>
+        <div id='myuniqueid' class="box" style="left:360px; top:60px;"></div> -->
+    </div>
 
 </body>
 

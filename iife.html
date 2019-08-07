@@ -2,6 +2,24 @@
 <html>
   <head>
     <title>IIFE</title>
+    <script>
+
+      // (
+      //   function(){
+      //     var aName = "John";
+      //   }
+      // )();
+
+      // aName; //aName is not defined
+
+      var result = (function(){
+        var name = "John";
+        return name;
+      })();
+
+      console.log(result);
+
+    </script>
   </head>
   <body>
       <a href="index.html">HOME</a>

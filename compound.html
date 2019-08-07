@@ -2,8 +2,31 @@
 <html>
   <head>
     <title>Compound Statement</title>
+    <script>
+    //================================
+    //Globals
+    var a = "hello world!";
+
+var Init = ()=>{
+  document.getElementById('main_container').innerHTML = a;
+};
+
+var GetHelloWorld = ()=>{
+  var a = "hello world 2";
+  return a;
+};
+
+console.log("a");
+
+var afun = () => {
+  console.log("i am a function")
+  console.log("actually i am an arrow function!");
+};
+
+    </script>
   </head>
-  <body>
+  <body onload="Init()">
+    <div id='main_container'></div>
       <a href="index.html">HOME</a>
     <h2>Compound Statment</h2>
     <p>

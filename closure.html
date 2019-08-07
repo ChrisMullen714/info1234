@@ -2,6 +2,24 @@
 <html>
   <head>
     <title>Closures</title>
+    <script>
+    //function factory
+    function makeAdder(x){
+      return function(y){
+        return x + y;
+      }
+    }
+
+    var add5 = makeAdder(5);
+    console.log('original function:', makeAdder);
+    console.log('add5, first call: ', add5);
+    console.log('add5:', add5(2));
+
+    var add10 = makeAdder(10);
+
+    console.log('add10: ', add10(2));
+
+    </script>
   </head>
   <body>
       <a href="index.html">HOME</a>

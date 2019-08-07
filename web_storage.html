@@ -2,8 +2,29 @@
 <html>
   <head>
     <title>Web Storage</title>
+    <script>
+    //local storage example
+    var Init = ()=>{
+      console.log(localStorage);
+      if(localStorage.lastName && localStorage.firstName){
+        document.getElementById('tbFirstName').value=localStorage.firstName;
+        document.getElementById('tbLastName').value = localStorage.lastName;
+      }
+    };
+
+    var SaveData = ()=>{
+      var firstName = document.getElementById('tbFirstName').value;
+      var lastName = document.getElementById('tbLastName').value;
+      if(firstName.length > 0 && lastName.length > 0){
+        localStorage.setItem('firstName', firstName);
+        localStorage.setItem('lastName', lastName);
+      }
+      //
+    };
+
+    </script>
   </head>
-  <body>
+  <body onload="Init()">
       <a href="index.html">HOME</a>
     <h2>Web Storage</h2>
     <p>HTML web storage provides two objects for storing data on the client:</p>
@@ -26,6 +47,25 @@ document.getElementById("result").innerHTML = localStorage.getItem("lastname");
     <ul>        
         <li><a href="https://www.w3schools.com">w3schools</a></li>
     </ul>
+</div>
+<div>
+  <table>
+    <tr>
+      <td>
+        <label>First Name:</label><input type="text" id="tbFirstName" />
+      </td>
+    </tr>
+    <tr>
+        <td>
+          <label>Last Name:</label><input type="text" id="tbLastName" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+          <input type="button" value="Save Data" onclick="SaveData()"/>
+        </td>
+    </tr>
+  </table>
 </div>
   </body>
 </html>

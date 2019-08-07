@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Web Storage</title>
+  </head>
+  <body>
+      <a href="index.html">HOME</a>
+    <h2>Web Storage</h2>
+    <p>HTML web storage provides two objects for storing data on the client:</p>
+    <p>window.localStorage - stores data with no expiration date</p>
+    <p>window.sessionStorage - stores data for one session (data is lost when the browser tab is closed)</p>
+
+    <h2>The localStorage Object</h2>
+    <p>The localStorage object stores the data with no expiration date. The data will not be deleted when the browser is closed, and will be available the next day, week, or year.</p>
+
+
+    <xmp>
+// Store
+localStorage.setItem("lastname", "Smith");
+
+// Retrieve
+document.getElementById("result").innerHTML = localStorage.getItem("lastname");
+    </xmp>
+    <div style="position: absolute; top:80%;">
+    <p>References:</p>
+    <ul>        
+        <li><a href="https://www.w3schools.com">w3schools</a></li>
+    </ul>
+</div>
+  </body>
+</html>
